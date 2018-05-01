@@ -69,10 +69,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-js函数笔记" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-函数笔记" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/05/01/js函数笔记/" class="article-date">
-  <time datetime="2018-05-01T15:27:42.000Z" itemprop="datePublished">2018-05-01</time>
+    <a href="/2018/05/01/函数笔记/" class="article-date">
+  <time datetime="2018-05-01T15:37:20.000Z" itemprop="datePublished">2018-05-01</time>
 </a>
     
   </div>
@@ -83,7 +83,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/01/js函数笔记/">js函数笔记</a>
+      <a class="article-title" href="/2018/05/01/函数笔记/">函数笔记</a>
     </h1>
   
 
@@ -91,11 +91,46 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="函数对象"><a href="#函数对象" class="headerlink" title="函数对象"></a>函数对象</h3><p>首先来理解一下什么事对象：ECMA-262是这样定义的“无序属性的集合，其属性可以包含基本值、对象或者函数”，也就是说，对象是‘名/值’对的集合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var person=new Object();</span><br><span class="line">person.name=&quot;Jake&quot;;</span><br><span class="line">person.age=18;</span><br><span class="line">person.sayName=function()&#123;</span><br><span class="line">    alert(this.name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的例子创建了一个名为person的对象，并为它添加了两个属性：name、age和一个方法sayName。其中sayName用于显示this.name（将被解析为person.name）的值。</p>
+<h3 id="函数字面量"><a href="#函数字面量" class="headerlink" title="函数字面量"></a>函数字面量</h3><p>我们来看一段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var add=function(a,b)&#123;</span><br><span class="line">    return a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数字面量包含4个部分，分别是：</p>
+<ul>
+<li>保留字 function</li>
+<li>函数名 add</li>
+<li>参数 a、b</li>
+<li>语句 return a+b;<br>函数字面量可以出现在任何允许出现的地方，也可以定义在其他函数中。一个内部函数除了可以访问自己的参数和变量，同时它也能自由地访问它的父函数的变量和参数。通过函数字面量创建的函数对象包含一个连接到外部上下文的链接。这被称为<strong>闭包</strong></li>
+</ul>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>闭包这个概念是js这门语言中一个非常重要而且是很难掌握的知识点！<br>这里只能浅显地解释一下什么是闭包<br>我们用一些代码来解释这个定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function foo()&#123;</span><br><span class="line">    var a=2;</span><br><span class="line">    function bar()&#123;</span><br><span class="line">        console.log(a);</span><br><span class="line">    &#125;</span><br><span class="line">    return bar;</span><br><span class="line">&#125;</span><br><span class="line">var baz=foo();</span><br><span class="line">baz();//2 &lt;--这就是闭包的效果</span><br></pre></td></tr></table></figure>
+<p>函数bar()的词法作用域能够访问foo()内部作用域，然后将bar()函数本身当作一个值类型进行传递。<br>在foo执行后，其返回值 bar（）赋值给变量baz并调用baz(),实际上只是通过不同的标识符引用调用了内部的函数bar()。<br>在foo执行后，foo内部作用域不会被销毁，因为一直都是bar()本身在使用，所哟foo内部作用域依然存在且能够一直存活，以供bar随时进行引用。<br>bar依然对该作用域保持引用，而这个引用就叫作闭包。</p>
+<h3 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h3><p>作用域的作用：控制着变量与参数的可见性以及生命周期。<br>定义在函数内部的参数和变量在函数外部是不可见的，而在一个函数内部任何位置定义的变量，在函数内部任何位置都可见。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var f00=function()&#123;</span><br><span class="line">    var a=3,b=5;</span><br><span class="line">    var bar=function()&#123;</span><br><span class="line">        var b=7,c=11;     //此时a=3,b=7,c=11;</span><br><span class="line">        a+=b+c;           //此时a=21,b=7,c=11;</span><br><span class="line">    &#125;;</span><br><span class="line">                          //此a=3,b=5,c没有定义；</span><br><span class="line">    bar();                //此时a=21,b=5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h3><p>调用一个函数会暂停当前函数的执行，传递控制权和参数给新函数。js提供了四种调用模式：方法调用模式、函数调用模式、构造器调用模式以及apply调用模式。</p>
+<ol>
+<li><p>方法调用模式<br>当一个函数被保存为对象的一个属性是，我们称之为方法。当一个方法被调用时，this被绑定到该对象，当对象与方法用“.”来连接时，那么它就被当作一个方法来调用了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var person=&#123;</span><br><span class="line">    name：&quot;Jake&quot;,</span><br><span class="line">    age:18,</span><br><span class="line">    sayAge:function(age)&#123;</span><br><span class="line">        this.age=age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">person.sayAge(19);</span><br><span class="line">docunment.writeln(person.age);//19</span><br></pre></td></tr></table></figure>
+<p>2.函数调用模式</p>
+</li>
+</ol>
+<p>当一个函数并不是一个对象的属性时，那么它就是被当作一个函数来调用的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var myobject=&#123;</span><br><span class="line">&#125;</span><br><span class="line">//添加一个新的方法</span><br><span class="line">myObject.do=function(value)&#123;</span><br><span class="line">   this.value=value;</span><br><span class="line">   var that=this;</span><br><span class="line">   var helper=function()&#123;</span><br><span class="line">       that.value=that.value+that.value;</span><br><span class="line">   &#125;;</span><br><span class="line">   helper();</span><br><span class="line">&#125;</span><br><span class="line">myObject.do(3);</span><br><span class="line">console.log(myObject.value)//6</span><br></pre></td></tr></table></figure>
+<p>这里面遇到一个问题，就是在helper函数内部的this指向的时这个函数本省，而不是全局对象。我们找到一个很好的解决方法，那就是<strong>将this赋值给一个全新的变量that</strong>,那么内部函数就可以访问到this，这样就避免了内部函数里面的this错误的绑定。</p>
+<p> 3 构造器调用模式</p>
+<p>一个函数，如果创建的目的就是希望结合new前缀来调用，那就被称为<strong>构造函数</strong><br>如果一个函数前面带上new来调用，那么就会创建一个连接到该函数的prototype（原型）成员的新对象，同时函数中的this会绑定到这个新对象中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var Myobject=function(string)&#123;</span><br><span class="line">    this.status=string;</span><br><span class="line">&#125;</span><br><span class="line">Myobject.prototype.get_status=function()&#123;</span><br><span class="line">    return this.status;</span><br><span class="line">&#125;</span><br><span class="line">//创建实例</span><br><span class="line">var newObj=new Myobject(&quot;Hello !&quot;);</span><br><span class="line">console.log(newObj.get_status());</span><br><span class="line">//Hello !</span><br></pre></td></tr></table></figure>
+<p>这里要特别注意：按照惯例，构造函数始终都应该以一个<strong>大写字母开头</strong>，而非构造函数则应该以一个小写字母开头。</p>
+<p> 4.Apply调用模式</p>
+<p>Apply方法让我们构建一个参数组传递给调用函数。它允许我们选择this的值。Apply方法接受两个参数，第一个要绑定给this的值，第二个就是参数数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var array=[3,4];</span><br><span class="line">var sum=add.apply(null,array);//sum值为 7</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var statusObj=&#123;</span><br><span class="line">    status:&apos;Hello&apos;</span><br><span class="line">&#125;;</span><br><span class="line">var status=Quo.prototype.get_status.apply(statusObj);</span><br><span class="line">//status值为‘Hello’</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function SpeciallArray()&#123;</span><br><span class="line">    var values=new Array();</span><br><span class="line">    values.push.apply(values,arguments);</span><br><span class="line">    values.toPipedString=function()&#123;</span><br><span class="line">        return this.join(&quot;|&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return values;</span><br><span class="line">&#125;</span><br><span class="line">var color=new SpeciallArray(&quot;blue&quot;,&quot;yellow&quot;,&quot;red&quot;);</span><br><span class="line">console.log(colo.toPipedString);</span><br><span class="line">//&quot;blue|yellow|red&quot;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/05/01/js函数笔记/" data-id="cjgnu4jcz00027gtpowdzm92u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/05/01/函数笔记/" data-id="cjgnu9jpj00011ctpv4a41p3h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -147,7 +182,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/19/【二次元stylus解放css】用stylus画可爱的小丸子/" data-id="cjgnu4jcx00017gtpl9wbakt7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/19/【二次元stylus解放css】用stylus画可爱的小丸子/" data-id="cjgnu9jpe00001ctpfkm13bqc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html/">html</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stylus/">stylus</a></li></ul>
@@ -194,7 +229,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/18/hello-world/" data-id="cjgnu4jcs00007gtpmmg3ah0b" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/18/hello-world/" data-id="cjgnu9jqb00061ctp7h1f8y19" class="article-share-link">Share</a>
       
       
     </footer>
@@ -249,7 +284,7 @@
       <ul>
         
           <li>
-            <a href="/2018/05/01/js函数笔记/">js函数笔记</a>
+            <a href="/2018/05/01/函数笔记/">函数笔记</a>
           </li>
         
           <li>
